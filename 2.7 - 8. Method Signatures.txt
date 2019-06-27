@@ -1,0 +1,51 @@
+L7.	Poor method Signatures
+一.	Method 中有 if condition, 然后代码很长 
+1.	可以把 if condition分离, 比如
+public User GetUser(string username, string pwd, bool isLogin)
+{
+	if(isLogin)
+	{
+		.....
+	}else
+	{
+		.....
+	}
+}
+就可以把这个 isLogin去掉, 分成 
+public User Login(string username, string pwd){ ... } 
+public User GetUser(string username, string pwd) { ... }
+ 
+二.	总结
+写方法要注意点:
+1.	Check the return type - 是否有意义, 比如都是return true, 或者return的内容和 method 不符号 
+2.	Check the method name - method name 和 实际操作不符号
+3.	Check the parameters  - parameters 是否有意义
+
+
+L8 Method 有 long parameter 
+一.	将long parameter 和 重复的parameter, 可以组成一个 class, 比如
+public void GetReservations (DateTime dateFrom, DateTime dateTo, User user, int locationId, LocationType locationType, int? customerId)
+
+
+注: 其他方法里也有很多 DateTime dateFrom, DateTime dateTo
+
+1.	先将重复多的合成一个 DateRang, 比如 dateFrom 和 dateTo 可以组合成 DateRange, 如下
+public DateRange
+{
+	public DateTime DateFrom {get;set}
+	public DateTime DateTo {get;set}
+}
+
+2.	将全部参数整成一个 (教程中有重复用到两次, 所以全部整成一个)
+public class ReservationsQuery 
+{
+	public DateTime DateFrom {get;set;}
+	public DateTime DateTo {get;set;}
+	User user{get;set;}
+	int locationId {get;set;}
+	LocationType locationType {get;set;} 
+	int? customerId {get;set;}
+}
+
+二.	总结
+1.	方法参数最好不要超过3个

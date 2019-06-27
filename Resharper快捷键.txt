@@ -1,2 +1,24 @@
-R
-Ctrl + B: 
+Resharper 快捷键
+
+1.	Ctrl + B: 切到 Implementation (定义的地方, 不管任何地方)
+2.	Ctrl + W: 把附近的代码靠近选上(按块的选中), 不停的按会扩大范围
+3.	Alt+ F7: 找到所有 references
+4.	Ctrl + Shift + W: 减少选中的范围
+
+Refactor 快捷键
+1.	Ctrl + Shift + R -> Safe Delete : 安全删除 方法或class的属性, 比如
+public void Call(int a, int b){ ... } 
+用 Safe Delete b 会把 其他地方有第二个参数的 Call 的第二个参数去掉 
+注: 推荐在用这个之前, 看看resharper 是否提示 从没用过 在方法中
+
+2.	Ctrl + Alt + M: extract method中code再生产 method (右键-> refactor -> extract method)
+
+3.	选中方法名 + 右键-> Refactor -> Extract Class From Parameters: 提取方法参数, 组合成一个class
+(可以选择Class/Structure, 还有选择生成代码的地方: Top-level / Nested)
+注: Resharper 会自动把那些方法参数和使用的地方在代码里代替, 而且会生成一个 get的方法
+
+4.	在3的情况下, 可能要修改的地方很多. 实际操作如下:
+(1).	可以先用3生成 别的class
+(2).	然后再用 change signature 去修改, 如下
+选中方法名 + 右键-> Refactor -> Change signature -> 就可以改 parameter type 和  parameter name
+(3).	删除掉 3 之前 生成的, 但是现在不用的

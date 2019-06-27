@@ -1,4 +1,4 @@
-L6
+L6 Naming Conventions
 一.	概念
 PasecalCase: All uppercase
 CamelCase: 第一个是 lowercase, 其他都是 upper case
