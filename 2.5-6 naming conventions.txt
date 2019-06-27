@@ -1,0 +1,26 @@
+L6
+一.	概念
+PasecalCase: All uppercase
+CamelCase: 第一个是 lowercase, 其他都是 upper case
+
+二.	Name Conventions
+public class Customer
+{
+	private int _id;
+	public string Name {get;set;}
+	public void Charge (int account)
+	{
+		var tax = 0;
+	}
+}
+ 
+三.	总结
+PasecalCase：
+1.	Class Name: PasecalCase
+2.	Method Name: PasecalCase
+3.	Class properties (public): PasecalCase
+
+4.	方法参数: CamelCase
+5.	方法里的数值(local variables): CamelCase
+6.	private fields: CamelCase
+注:	private fields前面还有要加 _ (prefix them with an underline) 
