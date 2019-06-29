@@ -1,0 +1,61 @@
+L10 variable declarations on the top
+
+正确用法:
+1.	先确认是否是一定要到class里多个地方, 
+	如果不是, 就放到方法里申明(resharper 会gray out 或者 提示 join declaration and assignment)
+
+2.	如果是 method里的 variable, 越靠近 使用的地方越好
+	
+
+L11	Magic numbers
+一.	原代码
+public void ApproveDocument (int status)
+{
+	if(status == 1)
+	{
+		.....
+	} else if (status == 2)
+	{
+		.....
+	}
+}
+
+2.	思路：如果可以将 1 命名为 draft 就好了, 比如
+public void ApproveDocument (int status)
+{
+	int draft = 1;
+	int submit = 2;
+	if(status == draft)
+	{
+		.....
+	} else if (status == submit)
+	{
+		.....
+	}
+}
+(只是这个方法用到, 说不准还行.如果用到多次. 就要下面的方法)
+
+二.	refactor 方法
+1.	选中 代码里的 1 -> 右键 -> refactor -> Introduce Field -> Introduce constant
+就会生成: private const int Name = 1; 在class里面(如果用 introduce variable, 就生成在方法中)
+
+2.	选中所有生成的 private const int Name = 1 -> Refactore(Alt + Enter) -> Extract class 
+
+3.	填写 Extracted class: DocumentStatus, 将 每个field 前面禁止的iconm -> Make public
+
+4.	Reshaper就会生成 public class DocumentStatus { public const int Draft =1; ... }, 
+	然后自己手动修改成 enum, 如下,
+	public enum DocumentStatus { Draft = 1, ....}
+	
+5.	DocumentStatus.type 就会不匹配 代码中 int, 因为它认为这个是 enum type.
+
+解决方案一:
+将所有用到 DocumentStatus.type 改成 -> (int) DocumentStatus.type
+
+解决方案二
+用resharper 去 change signature (这样就会把所有用到这个方法的地方都改了)
+
+public void ApproveDocument (DocumentStatus status)
+{
+	....
+}
