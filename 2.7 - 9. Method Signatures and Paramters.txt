@@ -49,3 +49,30 @@ public class ReservationsQuery
 
 二.	总结
 1.	方法参数最好不要超过3个
+
+L9	Output parameter
+一.	原代码:
+public IEnumerable<Customer> GetCustomers(int pageIdex, out int totalCount)
+{
+	//注: return的是当前页的customers, out 是 total的数
+}
+
+二.	优化方法
+1.: 用refactor -> 变成 Tuple (一种 data tructure, 可以有多个fields), 如下
+public Tuple<IEnumerable<Customer>, int> GetCustomers(int pageIdex, out int totalCount)
+{	...	}
+注: Refactor 还会将有用到这个方法的地方 -> 改成 Tuple.Item1, Tuple.Item2
+
+2.	进步一优化 - 创建一个class 去包括 IEnumerable<Customer> 和 totalCount. 
+
+3.	然后用 refactore 去change signature 
+
+注: 这里由于是先建的tuple, 所以后面建的class 的field 要叫 Item1 和 Item2. 
+	change signature后, 再去 rename Item1 和 Item2
+
+
+额外4. 选中Variable name -> Refactore -> Inline Variable -> 将只使用一次的 Variable, 但是赋值很复杂的操作合成一个
+
+三.	总结
+1.	尽量避免 output parameter, 将他们整合到 return object里 
+2.	如果只用一次的 local variable, 可以考虑怎么去 refactore 它. (真的需要 申明吗)

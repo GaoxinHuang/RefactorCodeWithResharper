@@ -22,3 +22,9 @@ public void Call(int a, int b){ ... }
 (2).	然后再用 change signature 去修改, 如下
 选中方法名 + 右键-> Refactor -> Change signature -> 就可以改 parameter type 和  parameter name
 (3).	删除掉 3 之前 生成的, 但是现在不用的
+
+5.	右键 -> Refactor -> Transform Out parameter -> 确定: 
+	将 out parameter 转成 Tuple, 而这个out parameter 就加到这里面
+	注: Refactor 还会将有用到这个方法的地方 -> 改成 Tuple.Item1, Tuple.Item2
+	
+6.	选中Variable name -> Refactore -> Inline Variable -> 将只使用一次的Variable, 但是赋值很复杂的操作合成一个
