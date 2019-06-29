@@ -5,7 +5,7 @@ Resharper 快捷键
 3.	Alt+ F7: 找到所有 references
 4.	Ctrl + Shift + W: 减少选中的范围
 
-Refactor 快捷键
+Resharper 的 Refactor 使用
 1.	Ctrl + Shift + R -> Safe Delete : 安全删除 方法或class的属性, 比如
 public void Call(int a, int b){ ... } 
 用 Safe Delete b 会把 其他地方有第二个参数的 Call 的第二个参数去掉 
@@ -28,3 +28,5 @@ public void Call(int a, int b){ ... }
 	注: Refactor 还会将有用到这个方法的地方 -> 改成 Tuple.Item1, Tuple.Item2
 	
 6.	选中Variable name -> Refactore -> Inline Variable -> 将只使用一次的Variable, 但是赋值很复杂的操作合成一个
+
+7.	选中 property fields -> 右键 -> Refactor -> Extracted class -> 填写 Extracted class: Name, 将每个field 前面禁止的iconm -> Make public
