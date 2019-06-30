@@ -4,6 +4,7 @@ Resharper 快捷键
 2.	Ctrl + W: 把附近的代码靠近选上(按块的选中), 不停的按会扩大范围
 3.	Alt+ F7: 找到所有 references
 4.	Ctrl + Shift + W: 减少选中的范围
+5.	Ctrl + T, D: debug test代码
 
 Resharper 的 Refactor 使用
 1.	Ctrl + Shift + R -> Safe Delete : 安全删除 方法或class的属性, 比如

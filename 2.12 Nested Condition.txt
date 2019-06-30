@@ -1,0 +1,84 @@
+L12 Nested Conditionals
+一. 几个快速的解决方案
+1.  Ternary Operator (三元运算符)
+原代码:
+if(a)
+{
+    return someValue;
+}else{
+    return anotherValue
+}
+
+修改后代码:
+return (a)? someValue: anotherValue;
+--------------------------------------
+2. 直接return 条件 
+原代码：
+if(a-1>0){
+    return true;
+}else{
+    return false;
+}
+
+修改后:
+return a-1>0;
+---------------------------------------
+3.  if里面有if
+原代码:
+if(a){
+    if(b){ ...}
+}
+
+修改后:
+方法一: if(a && b){ ... }
+方法二: 帮助逻辑上的方法
+if(!a||!b){return; }
+..... 
+
+4.  if上的切换
+原代码:
+if(a){
+    if(b){...}
+}
+if(c){
+    if(b){....}
+}
+
+修改后:
+if(b){
+    if(a){...}
+    if(c){...}
+}
+
+二. 实例
+1.  原代码：
+if(points >100){
+    if((From - DateTime.Now).Hours <24){
+        ....
+    }
+}else{
+    if((From - DateTime.Now).Hours <48){
+        ...
+    }
+}
+
+2.  Refactor:
+(1).    用 maxHours = 24; 
+(2).    然后用resharper 去生成 LessThanMaxHours(int maxHours) {....} (Extract method)
+(3).    然后删除 maxHours = 24; 
+(4).    用 points > 100 (其实是查看是否到达gold 的point) 生成一个无惨数的方法 IsGoldCustomer()
+最后改成:
+if(IsGoldCustomer() && LessThanMaxHours(24)){ ... }
+else {
+    if(!IsGoldCustomer() && LessThanMaxHours(48)){ ...  }
+}
+注: 这里要注意一个逻辑问题: 必须添加 !IsGoldCustomer(), 
+因为原逻辑上是 (1). IsGoldCustomer() -> Y LessThanMaxHours(24) | N LessThanMaxHours(48) - 不是会员, 而且没超过48小时才执行
+而如果没有!IsGoldCustomer(). 就会变成 只要LessThanMaxHours(48) 就会执行, 而无需check是不是会员
+
+(5).    最后教程里又把 IsGoldCustomer() && LessThanMaxHours(24) 和 !IsGoldCustomer() && LessThanMaxHours(48) 合并成一个method(return bool)
+        因为里面执行操作都差不多. 最后只有一个if条件语句
+
+三. 总结
+1.  Refactor 代码 一定要带上 Unit test. 以防在refactore的过程中出错
+2.  在不同condition底下, 如果有同一个执行操作, 看下是否有可能提取出相同的condition, 合并成一段
