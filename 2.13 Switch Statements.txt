@@ -60,3 +60,8 @@ public class PayAsYouGoCustomer: Customer
 使用:
 Customer customer = new UnlimitedCustomer();
 Customer customer = new PayAsYouGoCustomer();
+
+三. 总结
+分解 Switch statement的核心就是 
+1.  利用 多态 去做 polymorphic dispatch 
+2.  利用 resharper 的 Push Member Down refactor 去 override 方法
