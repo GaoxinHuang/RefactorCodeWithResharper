@@ -12,9 +12,9 @@ public void Call(int a, int b){ ... }
 用 Safe Delete b 会把 其他地方有第二个参数的 Call 的第二个参数去掉 
 注: 推荐在用这个之前, 看看resharper 是否提示 从没用过 在方法中
 
-2.	Ctrl + Alt + M: extract method中code再生产 method (右键-> refactor -> extract method)
+2.	extract method中code再生产 method (右键-> refactor -> extract method):	Ctrl + Alt + M 
 
-3.	选中方法名 + 右键-> Refactor -> Extract Class From Parameters: 提取方法参数, 组合成一个class
+3.	提取方法参数, 组合成一个class:	选中方法名 + 右键-> Refactor -> Extract Class From Parameters
 (可以选择Class/Structure, 还有选择生成代码的地方: Top-level / Nested)
 注: Resharper 会自动把那些方法参数和使用的地方在代码里代替, 而且会生成一个 get的方法
 
@@ -24,10 +24,14 @@ public void Call(int a, int b){ ... }
 选中方法名 + 右键-> Refactor -> Change signature -> 就可以改 parameter type 和  parameter name
 (3).	删除掉 3 之前 生成的, 但是现在不用的
 
-5.	右键 -> Refactor -> Transform Out parameter -> 确定: 
-	将 out parameter 转成 Tuple, 而这个out parameter 就加到这里面
+5.	将 out parameter 转成 Tuple, 而这个out parameter 就加到这里面:
+	操作:	右键 -> Refactor -> Transform Out parameter -> 确定
 	注: Refactor 还会将有用到这个方法的地方 -> 改成 Tuple.Item1, Tuple.Item2
 	
 6.	选中Variable name -> Refactore -> Inline Variable -> 将只使用一次的Variable, 但是赋值很复杂的操作合成一个
 
-7.	选中 property fields -> 右键 -> Refactor -> Extracted class -> 填写 Extracted class: Name, 将每个field 前面禁止的iconm -> Make public
+7.	提取property到新的class里: 	选中 property fields -> 右键 -> Refactor -> Extracted class -> 填写 Extracted class: Name, 将每个field 前面禁止的iconm -> Make public
+
+8.	移到方法到不同的class里: 	选中方法名 -> 右键 -> Refactor -> Move Instance Method -> 选中想要移到的 class 底下
+
+9.	提取 方法或property 变成 abstract 给子类去实现:	选中方法名 -> 右键 -> Push Members Down -> 在想要提取的方法里 abstract 的框里打钩 

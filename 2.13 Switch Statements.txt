@@ -1,0 +1,62 @@
+一. 原代码
+public void Generate(Usage usage)
+{
+    switch(usage.Customer.Type){
+        case CustomerType.PayAsYouGo:
+            .....
+            break;
+        case CustomerType.Unlimited:
+            .....
+            break;
+        default:
+            .......
+    }
+}
+注: 每次在refactor之前, 一定要有unit test
+
+二. refactor 
+1.  Resharper 可以帮助你直接 move 一个 method(因为名字不对) 到另一个class里
+2.  Resharper -> signature change -> 重新生成一个 方法, 因为其实也是传入这个方法, 然后更新.还不如直接return 出去呢.
+实际操作
+3.  因为这个方法是对于 Customer Type的对比. 所以方法移到 Customer class底下
+4.  但是这个是针对不同的customer type, 所以就可以写成两个 子类去继承 customer (customer就可以变成 abstract class)
+5.  最后将 这个switch statement 变成了 两个子类的class底下的方法. (分开的), 利用多态
+
+三. 修改后的代码
+1.  递进思路 
+(1).    做几个子类, 在他们的构造器中告诉他们type是什么, 方法又继承其写法(switch自然会选对), 所以不需要重写
+public class UnlimitedCustomer: Customer 
+{
+    public UnlimitedCustomer() { Type = CustomerType.Unlimited; } //被分完后, Type直接不需要了
+} 
+
+(2).    完全去掉 Switch statement, 直接在子类里把方法给分离开, 更好管理
+
+2.  修改的class代码 
+//下面代码被合并后, 也被移除了
+//public enum CustomerType {
+//       PayAsYouGo =1, 
+//       Unlimited
+//}
+
+public abstract class Customer
+{
+//    public CustomerType Type{get;set;} //Type 被 
+    public abstract MonthlyStatement Generate(MonthlyStatement MonthlyStatement);
+} 
+
+public class UnlimitedCustomer: Customer 
+{
+    //public UnlimitedCustomer() {Type = CustomerType.Unlimited; } //被分完后, Type直接不需要了
+    public override MonthlyStatement Generate(MonthlyStatement MonthlyStatement) { ... };
+} 
+
+public class PayAsYouGoCustomer: Customer 
+{
+    //public UnlimitedCustomer() {Type = CustomerType.Unlimited; } //被分完后, Type直接不需要了
+    public override MonthlyStatement Generate(MonthlyStatement MonthlyStatement) { ... };
+} 
+
+使用:
+Customer customer = new UnlimitedCustomer();
+Customer customer = new PayAsYouGoCustomer();
