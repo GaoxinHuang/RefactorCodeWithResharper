@@ -4,4 +4,4 @@
 
 2.  将有相关的方法尽可能放在一起
 
-3.  尽可能把 与 class property 有关的方法往上放. 这样就可以看到 property(attribute) 怎么用了
+3.  尽可能把 与 class property 有关的方法往上放. 这样就可以看到这些property(attribute) 如何使用了
