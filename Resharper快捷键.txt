@@ -6,6 +6,7 @@ Resharper 快捷键
 4.	Ctrl + Shift + W: 减少选中的范围
 5.	Ctrl + T, D: debug test代码
 6.	快速找到 todo: View -> Task List -> Description 改成 Comment 
+7.	移动整段代码移动到当前上面的方法的上面:	选中整个方法 -> Shift + Ctrl + up (小键盘的上)
 
 Resharper 的 Refactor 使用
 1.	Ctrl + Shift + R -> Safe Delete : 安全删除 方法或class的属性, 比如
