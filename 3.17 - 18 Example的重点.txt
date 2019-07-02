@@ -1,4 +1,5 @@
 一. 自学重点
+L17
 1.  private property (attribute) 应该被初始化在 constructor 里, 
     而不是任何方法中. 不然很可能, 只需要在那个方法申明即可
 
