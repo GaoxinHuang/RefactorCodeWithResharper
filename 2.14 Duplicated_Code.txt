@@ -2,4 +2,14 @@
 1.  Donot repeat yourself (DRY的缩写)
 2.  原因: 一旦一个地方要改, 另外地方也要改
 
-二. 
+二. refactore 方法 
+1.  提取 Duplicated code, 可以生成一个方法(用resharper -> extract method) 
+2.  它是否需要return 什么type 和 传递什么参数 (甚至创建一个 class 用于 return 或 pass parameter)
+3.  可以利用那个 resharper 的方法去生成一个 class (参数刚刚开始叫 Item1 和 Item2, 接着去 rename 那个就会安全rename)
+
+
+三. 总结 
+1.  如果有 Duplicated code, 可以生成一个方法 (用resharper -> extract method) 
+    ->  然后观察它是否需要return 什么type 和 传递什么参数 (甚至创建一个 class 用于 return 或 pass parameter)
+
+2.  Donot repeat yourself (DRY的缩写)
