@@ -1,0 +1,43 @@
+一. 无需或无用的comment 
+(1).    // return the list of customer (代码已经解释了很清楚)
+public List<Customer> GetCustomer){...}  
+
+(2)//Create a connection (代码已经解释了很清楚)
+var connection = new SqlConnection(); 
+
+(3)// Prior to v1.3 (无人关心这个version)
+if(isActive){ ... }  
+
+(4)// 1/01/2018 - John: xxxx (无需 谁和date, 因为 Version History) 
+
+(5) var pf = 10; // Pay Frequency (没有太大帮助, 为什么不命名成 payFrequency )
+
+(6) // public class WorkScheduler{ ... } (对于 dead code, 也是很无意义. 在history, 你可以code it back)
+
+二. 好案例
+1.   解释了当前的problems, 情况和原因(限制), 最好还有 how to do
+public void GetX(){
+    //TODO: We need ... Currenly, it is creating .... 
+    //because we are not able to do ....
+    //注:   解释了当前的problems, 情况和原因(限制)
+}
+
+三. 处理一些案例
+1.  解释步骤的comment 通常可以分解成 几个method
+原代码:
+public void SubmitOrder()
+{
+    // Save order 
+    .....
+
+    // Send email
+    ....
+}
+方案    (1) 将两个步骤代码分别组成一个method, 命名成 SaveOrder() 和 SendEmail() (用refactor -> extract method)
+        (2) 这样就可以把 comment 去掉了 
+
+
+四. 总结(Best Practices):
+1.  The comment for the code is the code itself (代码已经解释做什么了)
+2.  Don't write comments, re-write your code!
+3.  Don't explain "What"(应该代码本身就解释了 what), Explan "why" and "how"
