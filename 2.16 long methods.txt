@@ -1,0 +1,158 @@
+一. 概念
+1.  Best Pracices总结:
+(1).  We want a method that specialises in one thing
+(2).  One Method should be short (Less than 10 lines) - 同时也特别难命名这个method;
+
+2.  a class/ method should do only one thing, and do it very well. 
+
+3.  方法
+Cohesion Principle (同样作用于 class 和 method):
+(1).    Find things that are related, should be together.
+(2).    Find things that are not related, should not be together
+
+二. 原代码
+    protected void Page_Load(object sender, EventArgs e)
+    {
+            System.IO.MemoryStream ms = CreateMemoryFile();
+
+            byte[] byteArray = ms.ToArray();
+            ms.Flush();
+            ms.Close();
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.Cookies.Clear();
+
+            Response.Cache.SetCacheability(HttpCacheability.Private);
+            Response.CacheControl = "private";
+
+            Response.Charset = System.Text.UTF8Encoding.UTF8.WebName;
+            Response.ContentEncoding = System.Text.UTF8Encoding.UTF8;
+            Response.AppendHeader("Pragma", "cache");
+            Response.AppendHeader("Expires", "60");
+            Response.ContentType = "text/comma-separated-values";
+            Response.AddHeader("Content-Disposition", "attachment; filename=FooFoo.csv");
+            Response.AddHeader("Content-Length", byteArray.Length.ToString());
+            Response.BinaryWrite(byteArray);
+    }
+
+    public System.IO.MemoryStream CreateMemoryFile()
+    {
+            MemoryStream ReturnStream = new MemoryStream();
+            try
+            {
+                string strConn = ConfigurationManager.ConnectionStrings["FooFooConnectionString"].ToString();
+                SqlConnection conn = new SqlConnection(strConn);
+                SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM [FooFoo] ORDER BY id ASC", conn);
+                DataSet ds = new DataSet();
+                da.Fill(ds, "FooFoo");
+                DataTable dt = ds.Tables["FooFoo"];
+
+                //Create a streamwriter to write to the memory stream
+                StreamWriter sw = new StreamWriter(ReturnStream);
+
+                int iColCount = dt.Columns.Count;
+
+                for (int i = 0; i < iColCount; i++)
+                {
+                    sw.Write(dt.Columns[i]);
+                    if (i < iColCount - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.WriteLine();
+
+                int intRows = dt.Rows.Count;
+
+                // Now write all the rows.
+                foreach (DataRow dr in dt.Rows)
+                {
+                    for (int i = 0; i < iColCount; i++)
+                    {
+
+                        if (!Convert.IsDBNull(dr[i]))
+                        {
+                            string str = String.Format("\"{0:c}\"", dr[i].ToString()).Replace("\r\n", " ");
+                            sw.Write(str);
+                        }
+                        else
+                        {
+                            sw.Write("");
+                        }
+
+                        if (i < iColCount - 1)
+                        {
+                            sw.Write(",");
+                        }
+                    }
+                    sw.WriteLine();
+                }
+
+                sw.Flush();
+                sw.Close();
+            }
+            catch (Exception Ex)
+            {
+                throw Ex;
+            }
+            return ReturnStream;
+    }
+
+三. refactor 思路
+1.  分析method里的代码, 是有相近或者相关的代码 可以组成另一组 method (用 resharper -> extract method)
+2.  观察 这个method 和这个class 名字 Download, 是否搭配. 不搭配的话, 是否要 移动或另建一个class 来装它 
+(用 resharper -> extract class 或 move class)
+
+四. 实际操作如下:
+1.  Response.Cache.SetCacheability(HttpCacheability.Private);
+    Response.CacheControl = "private";
+    //下面是移动相关的
+    Response.AppendHeader("Pragma", "cache");
+    Response.AppendHeader("Expires", "60");
+    组成一个方法
+
+2.      StreamWriter sw = new StreamWriter(ReturnStream);
+        int iColCount = dt.Columns.Count;
+        for (int i = 0; i < iColCount; i++)
+        {
+            sw.Write(dt.Columns[i]);
+            if (i < iColCount - 1)
+            {
+                sw.Write(",");
+            }
+        }
+        sw.WriteLine();
+组成 一个方法 WriteColumnNames(dt, sw); -> 这里面: int 
+
+3.  将foreach 里的 for loop 组装成一个 method
+        for (int i = 0; i < iColCount; i++)
+        {
+            if (!Convert.IsDBNull(dr[i]))
+            {
+                string str = String.Format("\"{0:c}\"", dr[i].ToString()).Replace("\r\n", " ");
+                sw.Write(str);
+            }else{   sw.Write("");   }
+            if (i < iColCount - 1)
+            {
+                sw.Write(",");
+            }
+        }
+
+        组成 wirteRow(DataTable dt, streamwriter sw, DataRow dr);
+结果:
+foreach(DataRow dr in dt.Rows){
+    wirteRow(DataTable dt, streamwriter sw, dr);
+    sw.WriteLine();
+}
+
+
+4.  将和database 连接和相关操作获取数据的部分, 移到新的class. 而将生成的数据作为 parameter 或 private property (类似dbcontext) 传入进来. 
+    这样说不定以后会用到
+
+
+四. 引入工具
+1.  Visual Studio Productivity Power Tools (最新版本只对 VS2017 和 VS2019)
+a.  每次 save, 就会清除 unused namespace. 设置如下
+    Tools -> Options -> Productivity Power Tools -> General -> remove and sort usings on save 上打勾

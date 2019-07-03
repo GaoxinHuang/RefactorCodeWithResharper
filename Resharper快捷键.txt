@@ -24,13 +24,16 @@ public void Call(int a, int b){ ... }
 (1).	可以先用3生成 别的class
 (2).	然后再用 change signature 去修改, 如下
 选中方法名 + 右键-> Refactor -> Change signature -> 就可以改 parameter type 和  parameter name
+注:	change signature 还可以改变 parameter的顺序
 (3).	删除掉 3 之前 生成的, 但是现在不用的
 
 5.	将 out parameter 转成 Tuple, 而这个out parameter 就加到这里面:
 	操作:	右键 -> Refactor -> Transform Out parameter -> 确定
 	注: Refactor 还会将有用到这个方法的地方 -> 改成 Tuple.Item1, Tuple.Item2
 	
-6.	选中Variable name -> Refactore -> Inline Variable -> 将只使用一次的Variable, 但是赋值很复杂的操作合成一个
+6.	选中Variable name -> Refactore -> Inline Variable -> 将申明完直接赋值的去掉, 通常用于只用一次的 variable.  比如 
+	var a = db.value; //将这段代码去掉, a的部分全部由 db.value 来代替
+	for(int i; i< a; i++){... }  
 
 7.	提取property到新的class里: 	选中 property fields -> 右键 -> Refactor -> Extracted class -> 填写 Extracted class: Name, 将每个field 前面禁止的iconm -> Make public
 
